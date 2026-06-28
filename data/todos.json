@@ -14,6 +14,26 @@
       "id": "zSaAU673x-c",
       "text": "I am going to make it more complex or intergrated",
       "completed": false
+    },
+    {
+      "id": "fmDwo86TPfo",
+      "text": "We are on the right track",
+      "completed": false
+    },
+    {
+      "id": "oVIlRaq12iI",
+      "text": "hi",
+      "completed": false
+    },
+    {
+      "id": "9jlyJw6WXNQ",
+      "text": "Completely understand what is going on...",
+      "completed": false
+    },
+    {
+      "id": "YeRgob69jf8",
+      "text": "",
+      "completed": false
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

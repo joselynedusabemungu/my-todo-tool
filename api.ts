@@ -2,10 +2,14 @@ import { ITask } from "./types/tasks";
 const baseUrl = "http://localhost:3001";
 
 export const getAllTodos = async (): Promise<ITask[]> => {
-  const resp = await fetch(`${baseUrl}/tasks`, { cache: "no-store" });
-  const todos = await resp.json();
-  return todos;
-};
+    // Adding a random timestamp (?t=...) ensures Next.js cannot read from an old cache!
+    const resp = await fetch(`${baseUrl}/tasks?t=${Date.now()}`, { 
+        cache: 'no-store' // Force a direct read from the live database file
+    });
+    const todos = await resp.json();
+    return todos;
+}
+
 
 export const addTodo = async (todo: ITask): Promise<ITask> => {
   const resp = await fetch(`${baseUrl}/tasks`, {

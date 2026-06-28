@@ -3,54 +3,45 @@
 import { FaPlus } from "react-icons/fa";
 import Modal from "./Modal";
 import { useState } from "react";
-import { addTodo } from "@/api";
-import { useRouter } from "next/navigation";
-import { v4 as uuidv4 } from 'uuid';
 
-const AddTask = () => {
-  const router = useRouter();
+interface AddTaskProps {
+  onAddTask: (text: string) => void; // Connects the form text to your dashboard state array
+}
+
+const AddTask: React.FC<AddTaskProps> = ({ onAddTask }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [newTaskValue, setNewTaskValue] = useState<string>("");
+  const [newTaskValue, setNewTaskValue] = useState<string>( "" );
 
-  const handleSubmitNewTodo: React.FormEventHandler<HTMLFormElement> = async (
-    e,
-  ) => {
+  const handleSubmitNewTodo: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    await addTodo({
-      id: uuidv4(),
-      text: newTaskValue,
-      completed: false,
-    });
-    setNewTaskValue("");
-    setModalOpen(false);
-    router.refresh();
-  };
+    if (!newTaskValue.trim()) return; // Data validation: prevents submitting empty task boxes
 
+    onAddTask(newTaskValue); // Injects your written text straight into the calculations loop
+    setNewTaskValue("");     // Resets the text field back to empty
+    setModalOpen(false);     // Closes the popup modal view automatically
+  };
+    
   return (
     <div>
-      <button
-        onClick={() => setModalOpen(true)}
-        className="btn btn-primary w-full"
-      >
-        Add new tast
-        <FaPlus className="ml-2" size={15} />
+      {/* Visual Button matching your sleek dashboard design */}
+      <button onClick={() => setModalOpen(true)} className="btn btn-primary w-full shadow-lg font-bold tracking-wide">
+        Add new task data point
+        <FaPlus className="ml-2" size={13} />
       </button>
 
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <form onSubmit={handleSubmitNewTodo}>
-          <h3 className="font-bold text-lg">Add new task</h3>
-          <div className="modalAction">
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input w-full"
-              onChange={(e) => setNewTaskValue(e.target.value)}
+        <form onSubmit={handleSubmitNewTodo} className="p-2">
+          <h3 className="font-extrabold text-xl text-white mb-4">Ingest New Data Record</h3>
+          <div className="flex flex-col gap-4">
+            <input 
+              type="text" 
+              placeholder="Type your objective contents here..." 
+              className="input input-bordered w-full bg-gray-900 border-gray-700 text-white focus:border-primary" 
+              onChange={(e) => setNewTaskValue(e.target.value)} 
               value={newTaskValue}
             />
-          </div>
-          <div className="modalAction">
-            <button type="submit" className="btn">
-              Add
+            <button type="submit" className="btn btn-primary w-full font-bold">
+              Submit Record to Pipeline
             </button>
           </div>
         </form>
@@ -58,4 +49,5 @@ const AddTask = () => {
     </div>
   );
 };
+
 export default AddTask;

@@ -1,17 +1,13 @@
-import { getAllTodos } from "@/api";
-import AddTask from "./components/AddTask";
 import TodoList from "./components/TodoList";
 
-export default async function Home() {
-  const tasks = await getAllTodos();
-  console.log(tasks);
+export default function Home() {
   return (
-      <main className="max-w-4xl mx-auto">
-        <div className="text-center my-5 flex flex-col gap-4">
-          <h1 className="text-2xl font-bold">My To-do List</h1>
-          <AddTask />
-        </div>
-        <TodoList tasks={tasks} />
-      </main>
+    <main className="max-w-4xl mx-auto p-4">
+      <div className="text-center my-5 flex flex-col gap-4">
+        <h1 className="text-2xl font-extrabold text-[#e2e8f0]">My Operational Todo Tracker</h1>
+      </div>
+      {/* We no longer pass static tasks from here */}
+      <TodoList />
+    </main>
   );
 }

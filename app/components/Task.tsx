@@ -2,79 +2,68 @@
 
 import { ITask } from "@/types/tasks";
 import React, { useState } from "react"; 
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import Modal from "./Modal";
-import { useRouter } from "next/navigation";
-import { editTodo } from "@/api";
-import { deleteTodo } from "@/api";
-
 
 interface TaskProps {
   task: ITask;
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, text: string) => void;
 }
 
-const Task: React.FC<TaskProps> = ({ task }) => {
-  const router= useRouter();
+const Task: React.FC<TaskProps> = ({ task, onToggle, onDelete, onEdit }) => {
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false);
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
-  const [taskToEdit, setTaskToEdit] = useState<string>(task.text);
+  const [taskToEdit, setTaskToEdit] = useState<string>(task.text || "");
 
-  const handleSubmitEditTodo : React.FormEventHandler<HTMLFormElement> = async (
-      e,
-    ) => {
-      e.preventDefault();
-      await editTodo({
-       id: task.id,
-       text: taskToEdit,
-       completed: task.completed
-      });
-      setOpenModalEdit(false);
-      router.refresh();
-    };
-
-    const handleDeleteTask = async (id:string) =>{
-      await deleteTodo(id);
-      setOpenModalDelete(false);
-      router.refresh();
-    } 
+  const handleSubmitEditTodo = (e: React.FormEvent) => {
+    e.preventDefault();
+    onEdit(task.id, taskToEdit);
+    setOpenModalEdit(false);
+  };
 
   return (
-    <tr key={task.id}>
-      <td className="w-full">{task.text}</td>
-      <td className="flex gap-5">
+    <tr className="border-b border-gray-800/40">
+      {/* Backticks correctly wrap dynamic CSS strings */}
+      <td className={`w-full ${task.completed ? "line-through text-gray-500" : "text-gray-200"}`}>
+        {task.text}
+      </td>
+      <td className="flex gap-5 items-center py-4">
+        
+        {/* ACTIVE CHECKBOX */}
         <input
           type="checkbox"
           checked={task.completed}
-          className="checkbox"
-          readOnly
+          onChange={() => onToggle(task.id)}
+          className="checkbox checkbox-primary cursor-pointer"
         />
-        <FiEdit onClick={() => setOpenModalEdit(true)} cursor="pointer" className="text-blue-500" size={23} />
+
+        {/* EDIT MODAL DIALOG */}
+        <FiEdit3 onClick={() => setOpenModalEdit(true)} className="text-blue-500 cursor-pointer" size={20} />
         <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
           <form onSubmit={handleSubmitEditTodo}>
-            <h3 className="font-bold text-lg">Edit task</h3>
-            <div className="modalAction">
-              <input
-                type="text"
-                placeholder="Type here"
-                className="input w-full"
-                onChange={(e) => setTaskToEdit(e.target.value)}
-                value={taskToEdit}
-              />
-            </div>
-            <div className="modalAction">
-              <button type="submit" className="btn">
-                Submit
-              </button>
-            </div>
+            <h3 className="font-bold text-lg text-white mb-2">Edit task name</h3>
+            <input
+              type="text"
+              className="input input-bordered w-full bg-gray-900 border-gray-700 text-white mb-4"
+              onChange={(e) => setTaskToEdit(e.target.value)}
+              value={taskToEdit}
+            />
+            <button type="submit" className="btn btn-primary w-full">Save Changes</button>
           </form>
         </Modal>
-        <FiTrash2 onClick={()=>setOpenModalDelete(true)} cursor="pointer" className="text-pink-500" size={23} />
-                <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
-                  <h3 className="text-lg">Are you sure you want to delete this task?</h3>
-                  <div className="modal-action">
-                    <button onClick={() => handleDeleteTask (task.id)} className="btn">Yes</button>
-                  </div>
+
+        {/* DELETE MODAL DIALOG */}
+        <FiTrash2 onClick={() => setOpenModalDelete(true)} className="text-pink-500 cursor-pointer" size={20} />
+        <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
+          <h3 className="text-lg text-white mb-4">Confirm delete action?</h3>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => onDelete(task.id)} className="btn btn-error flex-1">Yes, Delete</button>
+            <button type="button" onClick={() => setOpenModalDelete(false)} className="btn flex-1">Cancel</button>
+          </div>
         </Modal>
+        
       </td>
     </tr>
   );

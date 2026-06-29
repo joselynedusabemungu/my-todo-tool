@@ -6,8 +6,8 @@ export default function Home() {
       <div className="text-center my-5 flex flex-col gap-4">
         <h1 className="text-2xl font-extrabold text-[#e2e8f0]">My Operational Todo Tracker</h1>
       </div>
-      {/* We no longer pass static tasks from here */}
-      <TodoList />
+      {/* We return to passing a clean, local placeholder list */}
+      <TodoList initialTasks={[]} />
     </main>
   );
 }

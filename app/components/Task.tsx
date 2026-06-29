@@ -25,13 +25,11 @@ const Task: React.FC<TaskProps> = ({ task, onToggle, onDelete, onEdit }) => {
 
   return (
     <tr className="border-b border-gray-800/40">
-      {/* Backticks correctly wrap dynamic CSS strings */}
       <td className={`w-full ${task.completed ? "line-through text-gray-500" : "text-gray-200"}`}>
         {task.text}
       </td>
       <td className="flex gap-5 items-center py-4">
         
-        {/* ACTIVE CHECKBOX */}
         <input
           type="checkbox"
           checked={task.completed}
@@ -39,7 +37,6 @@ const Task: React.FC<TaskProps> = ({ task, onToggle, onDelete, onEdit }) => {
           className="checkbox checkbox-primary cursor-pointer"
         />
 
-        {/* EDIT MODAL DIALOG */}
         <FiEdit3 onClick={() => setOpenModalEdit(true)} className="text-blue-500 cursor-pointer" size={20} />
         <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
           <form onSubmit={handleSubmitEditTodo}>
@@ -54,7 +51,6 @@ const Task: React.FC<TaskProps> = ({ task, onToggle, onDelete, onEdit }) => {
           </form>
         </Modal>
 
-        {/* DELETE MODAL DIALOG */}
         <FiTrash2 onClick={() => setOpenModalDelete(true)} className="text-pink-500 cursor-pointer" size={20} />
         <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>
           <h3 className="text-lg text-white mb-4">Confirm delete action?</h3>

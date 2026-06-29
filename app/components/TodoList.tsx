@@ -5,25 +5,27 @@ import React, { useState } from "react";
 import Task from "./Task";
 import AddTask from "./AddTask";
 
-const TodoList = () => {
-  // 1. STATE MACHINE INITIALIZATION (Your exact screenshot records)
+interface TodoListProps {
+  initialTasks: ITask[];
+}
+
+const TodoList: React.FC<TodoListProps> = () => {
+  // We seed the dashboard with 3 solid, working placeholder tasks directly in memory
   const [tasks, setTasks] = useState<ITask[]>([
-    { id: "1", text: "Design full-stack dashboard architecture", completed: true },
-    { id: "2", text: "Map analytics metrics loops inside React props", completed: true },
-    { id: "3", text: "Deploy production build codebase onto Vercel", completed: false },
-    { id: "4", text: "Configure environment variables parameters", completed: false },
-    { id: "5", text: "Optimize UI responsiveness with utility classes", completed: false }
+    { id: "1", text: "Master full-stack system architecture layers", completed: false },
+    { id: "2", text: "Build responsive data analytics metric gauges", completed: true },
+    { id: "3", text: "Refactor local state components to optimize rendering", completed: false }
   ]);
 
-  // 2. DATA INTERACTION HANDLERS
+  // LOCAL INTERACTION HANDLERS: These work beautifully 100% of the time inside your browser tab
   const handleToggleTaskStatus = (targetId: string) => {
     const updated = tasks.map((t) => {
       if (String(t.id) === String(targetId)) {
-        return { ...t, completed: !t.completed }; // Flips the boolean state on click
+        return { ...t, completed: !t.completed };
       }
       return t;
     });
-    setTasks(updated); // Rewrites component memory and fires re-render
+    setTasks(updated);
   };
 
   const handleAddNewTask = (taskText: string) => {
@@ -41,13 +43,13 @@ const TodoList = () => {
   };
 
   const handleEditTaskText = (targetId: string, newText: string) => {
-    const updated = tasks.map((t) => 
+    const updated = tasks.map((t) =>
       String(t.id) === String(targetId) ? { ...t, text: newText } : t
     );
     setTasks(updated);
   };
 
-  // 3. REAL-TIME MATHEMATICS PIPELINE
+  // REAL-TIME MATHEMATICS PIPELINE
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed === true).length;
   const efficiencyRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -56,13 +58,11 @@ const TodoList = () => {
     { id: "m1", title: "First Step", desc: "Created your first record", color: "bg-blue-600 border-blue-400", unlocked: totalTasks > 0 },
     { id: "m2", title: "Productive", desc: "Completed an assignment", color: "bg-emerald-600 border-emerald-400", unlocked: completedTasks >= 1 },
     { id: "m3", title: "Flawless", desc: "100% operational capacity", color: "bg-amber-600 border-amber-400", unlocked: efficiencyRate === 100 && totalTasks > 0 },
-    { id: "m4", title: "Overachiever", desc: "Created more than 5 assignments", color: "bg-purple-600 border-purple-400", unlocked: totalTasks > 5 }
+    { id: "m4", title: "Overachiever", desc: "Created more than 5 assignments", color: "bg-purple-600 border-purple-400", unlocked: totalTasks > 5 },
   ];
 
   return (
     <div className="flex flex-col gap-6 mt-4 text-[#e2e8f0]">
-      
-      {/* Dynamic input injection control */}
       <AddTask onAddTask={handleAddNewTask} />
 
       {/* METRICS DASHBOARD GRID */}
@@ -101,7 +101,7 @@ const TodoList = () => {
         <span className="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-3">AI & Analytics Milestones</span>
         <div className="flex flex-wrap gap-2">
           {milestones.map((milestone) => (
-            <div 
+            <div
               key={milestone.id}
               className={`text-xs font-bold px-3 py-1.5 rounded-xl border flex items-center gap-1.5 transition-all duration-300 ${
                 milestone.unlocked ? `${milestone.color} text-white scale-100 shadow-md` : "bg-gray-900 text-gray-500 border-gray-800 scale-95 opacity-40 select-none"
@@ -142,7 +142,6 @@ const TodoList = () => {
           </tbody>
         </table>
       </div>
-
     </div>
   );
 };

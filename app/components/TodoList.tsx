@@ -12,9 +12,8 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = () => {
   // We seed the dashboard with 3 solid, working placeholder tasks directly in memory
   const [tasks, setTasks] = useState<ITask[]>([
-    { id: "1", text: "Master full-stack system architecture layers", completed: false },
-    { id: "2", text: "Build responsive data analytics metric gauges", completed: true },
-    { id: "3", text: "Refactor local state components to optimize rendering", completed: false }
+    { id: "1", text: "Build everyday", completed: false },
+    { id: "2", text: "Look unto The Original Creator always :]", completed: false }
   ]);
 
   // LOCAL INTERACTION HANDLERS: These work beautifully 100% of the time inside your browser tab
